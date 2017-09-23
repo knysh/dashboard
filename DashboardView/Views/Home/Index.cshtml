@@ -1,4 +1,5 @@
 ﻿@using DashboardView.CI.Jenkins;
+@using DashboardView.Utils;
 @model DashboardView.Models.Groups
 <!DOCTYPE html>
 <html>
@@ -46,15 +47,15 @@
                     <th>Job name</th>
                     <th>status</th>
                     <th>duration</th>
-                    <th>last execution</th>
+                    <th>link to build</th>
                 </tr>
                 @foreach (var build in @Model.GroupList.ElementAt(index).Builds)
                 {
                     <tr class="collapse row@{@index}">
                         <td>@build.Name</td>
-                        <td>@JenkinsApi.GetLatestBuildResult(build.Name)</td>
-                        <td>duration 1</td>
-                        <td>@JenkinsApi.GetAllBuilds()</td>
+                        <td>@JenkinsApi.GetBuildInfo(build.Name).Result</td>
+                        <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
+                        <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
                     </tr>
                 }
             </tbody>

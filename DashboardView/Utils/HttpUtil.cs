@@ -17,12 +17,19 @@ namespace DashboardView.Utils
             request.Method = "GET";
             request.Accept = "application/json";
             request.Headers.Add("Authorization", "Basic " + encoded);
-            var response = (HttpWebResponse)request.GetResponse();
-            var reader = new StreamReader(response.GetResponseStream());
-            var output = new StringBuilder();
-            output.Append(reader.ReadToEnd());
-            response.Close();
-            return output.ToString();
+            try{
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    var reader = new StreamReader(response.GetResponseStream());
+                    var output = new StringBuilder();
+                    output.Append(reader.ReadToEnd());
+                    return output.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Cannot get respont for request with url {url}: " + e.Message);
+            }
         }
     }
 }

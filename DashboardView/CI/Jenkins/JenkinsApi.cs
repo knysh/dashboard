@@ -19,15 +19,10 @@ namespace DashboardView.CI.Jenkins
             return builds;
         }
 
-        public static string GetBuildInfo(string buildName)
-        {
-            return HttpUtil.GetRequest($"{JenkinsUrl}/job/{buildName}/lastBuild/api/json", JenkinsUser, JenkinsPassword);
-        }
-
-        public static string GetLatestBuildResult(string buildName)
+        public static BuildModel GetBuildInfo(string buildName)
         {
             var response = HttpUtil.GetRequest($"{JenkinsUrl}/job/{buildName}/lastBuild/api/json", JenkinsUser, JenkinsPassword);
-            return JsonConvert.DeserializeObject<BuildModel>(response).Result;
+            return JsonConvert.DeserializeObject<BuildModel>(response);
         }
     }
 }
