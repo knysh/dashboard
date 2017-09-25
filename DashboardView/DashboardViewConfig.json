@@ -3,7 +3,7 @@
     {
       "Title": "InstallationGroup",
       "Builds": [
-        { "Name": "test_job" },
+        { "Name": "test_job"},
         { "Name": "test_job" },
         { "Name": "test_job" }
       ]
@@ -11,9 +11,9 @@
     {
       "Title": "InstallationGroup",
       "Builds": [
-        { "Name": "test_job" },
-        { "Name": "test_job" },
-        { "Name": "test_job" }
+        { "Name": "test1_job" },
+        { "Name": "test1_job" },
+        { "Name": "test1_job" }
       ]
     }
   ]

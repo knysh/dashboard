@@ -10,61 +10,86 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .flat-table {
+            table-layout:fixed;
             display: block;
+            font-style: normal;
             font-family: sans-serif;
             -webkit-font-smoothing: antialiased;
-            font-size: 115%;
-            overflow: auto;
-            width: auto;
         }
         th {
-            background-color: rgb(112, 196, 105);
-            color: white;
-            font-weight: normal;
+            background-color: lightblue;
+            color: hotpink;
+            font-weight: bold;
             padding: 20px 30px;
-            text-align: center;
+            width: 2%;
         }
         td {
             background-color: rgb(238, 238, 238);
             color: rgb(111, 111, 111);
             padding: 20px 30px;
+            width: 2%;
         }
         tr.table_columns td {
             display: table-row;
             font-weight: 900;
             background: #27ae60;
             color: white;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     @for (var index = 0; index < Model.GroupList.Count; index++)
     {
-        <h1 class="clickable" data-toggle="collapse" id="row@{@index}" data-target=".row@{@index}">@Model.GroupList.ElementAt(index).Title</h1>
-        <table class="table table-responsive table-hover flat-table">
-            <tbody>
-                <tr class="collapse row@{@index}">
-                    <th>Job name</th>
-                    <th>status</th>
-                    <th>duration</th>
-                    <th>link to build</th>
-                </tr>
-                @foreach (var build in @Model.GroupList.ElementAt(index).Builds)
-                {
+        <button class="btn btn-block btn-info" data-toggle="collapse" id="row@{@index}" data-target=".row@{@index}">@Model.GroupList.ElementAt(index).Title</button>
+        <div class="table-responsive">
+            <table class="table table-hover flat-table ">
+                <thead>
                     <tr class="collapse row@{@index}">
-                        <td>@build.Name</td>
-                        <td>@JenkinsApi.GetBuildInfo(build.Name).Result</td>
-                        <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
-                        <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
+                        <th>Job name</th>
+                        <th>status</th>
+                        <th>duration</th>
+                        <th>link to build</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var build in @Model.GroupList.ElementAt(index).Builds)
+                    {
+                        if (@JenkinsApi.GetBuildInfo(build.Name).Result.Contains("SUCCESS"))
+                        {
+                            <tr class="success collapse row@{@index}">
+                                <td>@build.Name</td>
+                                <td>@JenkinsApi.GetBuildInfo(build.Name).Result</td>
+                                <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
+                                <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
+                            </tr>
     }
-    <footer>
-        <p>Knysh Sergey Production</p>
-    </footer>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    if (@JenkinsApi.GetBuildInfo(build.Name).Result.Contains("FAILURE"))
+    {
+        <tr class="danger collapse row@{@index}">
+            <td>@build.Name</td>
+            <td>@JenkinsApi.GetBuildInfo(build.Name).Result</td>
+            <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
+            <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
+        </tr>
+        }
+    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+    <div class="navbar-fixed-bottom row-fluid">
+        <div class="navbar-inner">
+            <div class="container">
+                <footer class="page-footer">
+                    <img src="http://www.im-action.ru/uploads/a1qa-logo.png" alt="Responsive image">
+                </footer>
+                </div>
+            </div>
+        </div>
+                @Scripts.Render("~/bundles/jquery")
+                @Scripts.Render("~/bundles/bootstrap")
 </body>
+
 </html>

@@ -1428,12 +1428,14 @@ th {
   line-height: 1.428571429;
   vertical-align: top;
   border-top: 1px solid #dddddd;
+  background-color: lightskyblue
 }
 
-.table thead > tr > th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #dddddd;
-}
+    .table thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dddddd;
+        background-color: lightskyblue
+    }
 
 .table caption + thead tr:first-child th,
 .table colgroup + thead tr:first-child th,
@@ -1449,7 +1451,7 @@ th {
 }
 
 .table .table {
-  background-color: #ffffff;
+  background-color: #f7b7e7;
 }
 
 .table-condensed thead > tr > th,
@@ -1528,7 +1530,7 @@ table th[class*="col-"] {
 .table > tbody > tr.success > th,
 .table > tfoot > tr.success > th {
   background-color: #dff0d8;
-  border-color: #d6e9c6;
+  border-color: #b94a48;
 }
 
 .table-hover > tbody > tr > td.success:hover,
