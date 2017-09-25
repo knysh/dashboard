@@ -1,5 +1,4 @@
 ﻿@using DashboardView.CI.Jenkins;
-@using DashboardView.Utils;
 @model DashboardView.Models.Groups
 <!DOCTYPE html>
 <html>
@@ -9,12 +8,24 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <style>
+        body {
+            background-color: rgb(0,0,0);
+            background-image: url(http://www.zingerbugimages.com/backgrounds/beveled_indented_squares_seamless_wallpaper_background_black.jpg);
+            background-position: top left;
+            background-repeat: repeat;
+            background-attachment: fixed;
+        }
+        button.btn-info {
+            text-align: left;
+            font-weight: bold;
+            font: initial;
+            font-size: 250%;
+        }
         .flat-table {
-            table-layout:fixed;
+            table-layout: fixed;
             display: block;
             font-style: normal;
             font-family: sans-serif;
-            -webkit-font-smoothing: antialiased;
         }
         th {
             background-color: lightblue;
@@ -22,23 +33,18 @@
             font-weight: bold;
             padding: 20px 30px;
             width: 2%;
+            font-size: 200%;
         }
         td {
-            background-color: rgb(238, 238, 238);
-            color: rgb(111, 111, 111);
-            padding: 20px 30px;
-            width: 2%;
-        }
-        tr.table_columns td {
-            display: table-row;
-            font-weight: 900;
-            background: #27ae60;
-            color: white;
-            width: 100%;
+            font: italic;
+            font-size: 100%;
         }
     </style>
 </head>
 <body>
+    <header>
+        <img src="http://www.im-action.ru/uploads/a1qa-logo.png" alt="Responsive image">
+    </header>
     @for (var index = 0; index < Model.GroupList.Count; index++)
     {
         <button class="btn btn-block btn-info" data-toggle="collapse" id="row@{@index}" data-target=".row@{@index}">@Model.GroupList.ElementAt(index).Title</button>
@@ -47,9 +53,9 @@
                 <thead>
                     <tr class="collapse row@{@index}">
                         <th>Job name</th>
-                        <th>status</th>
-                        <th>duration</th>
-                        <th>link to build</th>
+                        <th>Status</th>
+                        <th>Duration</th>
+                        <th>Link to build</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,19 +69,18 @@
                                 <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
                                 <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
                             </tr>
-    }
-    if (@JenkinsApi.GetBuildInfo(build.Name).Result.Contains("FAILURE"))
-    {
-        <tr class="danger collapse row@{@index}">
-            <td>@build.Name</td>
-            <td>@JenkinsApi.GetBuildInfo(build.Name).Result</td>
-            <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
-            <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
-        </tr>
-        }
-    }
-                </tbody>
-
+                        }
+                        if (@JenkinsApi.GetBuildInfo(build.Name).Result.Contains("FAILURE"))
+                        {
+                            <tr class="danger collapse row@{@index}">
+                                <td>@build.Name</td>
+                                <td>@JenkinsApi.GetBuildInfo(build.Name).Result</td>
+                                <td>@JenkinsApi.GetBuildInfo(build.Name).Duration</td>
+                                <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link to build</a></td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
             </table>
         </div>
     }
@@ -83,7 +88,7 @@
         <div class="navbar-inner">
             <div class="container">
                 <footer class="page-footer">
-                    <img src="http://www.im-action.ru/uploads/a1qa-logo.png" alt="Responsive image">
+                    <p>Knysh Sergey Production</p>
                 </footer>
                 </div>
             </div>
@@ -91,5 +96,4 @@
                 @Scripts.Render("~/bundles/jquery")
                 @Scripts.Render("~/bundles/bootstrap")
 </body>
-
 </html>
