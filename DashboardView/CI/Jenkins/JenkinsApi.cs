@@ -9,9 +9,9 @@ namespace DashboardView.CI.Jenkins
 {
     public class JenkinsApi
     {
-        private const string JenkinsUrl = "http://localhost:8080/";
-        private const string JenkinsUser = "admin";
-        private const string JenkinsPassword = "admin";
+        private static readonly string JenkinsUrl = ConfigReader.GetCiUrl();
+        private static readonly string JenkinsUser = ConfigReader.GetUserName();
+        private static readonly string JenkinsPassword = ConfigReader.GetUserPassword();
 
         public static string GetAllBuilds()
         {

@@ -10,7 +10,7 @@ namespace DashboardView.CI.Jenkins
     {
         private double duration;
         public string Result { get; set; }
-        public double Duration { get { return duration / 1000; } set { duration = value; } }
+        public int Duration { get { return (int) (duration / 1000); } set { duration = value; } }
         public string Url { get; set; }
     }
 }

@@ -147,6 +147,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Utils\TimeUtil.cs" />
+    <Compile Include="Utils\ConfigReader.cs" />
     <Compile Include="Utils\DashboardConfigurationManager.cs" />
     <Compile Include="Models\Groups.cs" />
     <Compile Include="Models\Group.cs" />
@@ -167,6 +169,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="DashboardViewConfig2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="DashboardViewConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -1,25 +1,19 @@
 ﻿{
   "GroupList": [
     {
-      "Title": "InstallationGroup",
+      "Title": "Installation group EN",
       "Builds": [
-        { "Name": "test_job"},
-        { "Name": "test1_job" },
-        { "Name": "test_job" }
+        { "Name": "Install_Silent_Client_Typical_EN"},
+        { "Name": "Install_Silent_LACe_Typical_EN" },
+        { "Name": "Install_UI_Client_Custom_EN" }
       ]
     },
     {
-      "Title": "InstallationGroup",
+      "Title": "Post installation group EN",
       "Builds": [
-        { "Name": "test1_job" },
-        { "Name": "test_job" },
-        { "Name": "test1_job" },
-        { "Name": "test1_job" },
-        { "Name": "test1_job" },
-        { "Name": "test1_job" },
-        { "Name": "test1_job" },
-        { "Name": "test1_job" },
-        { "Name": "test1_job" }
+        { "Name": "Post_Upgrade_UI_SR3_EN" },
+        { "Name": "PostInstall_UI_Server_Full_EN" },
+        { "Name": "PostInstall_UI_Personal_Custom_EN" }
       ]
     }
   ]
