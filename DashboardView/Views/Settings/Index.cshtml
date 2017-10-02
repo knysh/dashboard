@@ -1,0 +1,34 @@
+﻿@model DashboardView.Models.Groups
+@{
+    ViewBag.Title = "Settings";
+}
+
+<h2>Settings</h2>
+@for (var index = 0; index < Model.GroupList.Count; index++)
+{
+    <button class="btn btn-block btn-lg buildsgroup" data-toggle="collapse" id="row@{@index}" data-target=".row@{@index}">@Model.GroupList.ElementAt(index).Title</button>
+    <div class="table-responsive">
+        <table class="table table-hover flat-table ">
+            <thead>
+                <tr class="collapse row@{@index}">
+                    <th>Job name</th>
+                    <th>Visible</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var buildIndex = 0; buildIndex < Model.GroupList.ElementAt(index).Builds.Count; buildIndex++)
+                {
+                    <tr class="success collapse row@{@index}">
+                        @{
+                            var currentBuild = @Model.GroupList.ElementAt(index).Builds.ElementAt(buildIndex);
+                            <td>@currentBuild.Name</td>
+                            <td>@Html.CheckBoxFor(model => model.GroupList.ElementAt(index).Builds.ElementAt(buildIndex).IsVisible)</td>
+                        } 
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<button>@Html.ActionLink("Save", "Save", "Settings", new { groups = Model })</button>
+

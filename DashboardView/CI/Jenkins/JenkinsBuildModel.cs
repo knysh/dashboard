@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DashboardView.CI.Jenkins
 {
-    public class BuildModel
+    public class JenkinsBuildModel
     {
         private double duration;
         public string Result { get; set; }
