@@ -4,6 +4,7 @@ using DashboardView.CI.CIFactory;
 using DashboardView.Utils;
 using DashboardView.CI.CIModels;
 using Utils;
+using System;
 
 namespace DashboardView.CI.Jenkins
 {
@@ -51,7 +52,14 @@ namespace DashboardView.CI.Jenkins
             var listOfBuilds = JsonConvert.DeserializeObject<JenkinsListOfBuildRuns>(response);
             foreach (var build in listOfBuilds.Builds)
             {
-                listOfBuildRuns.Add(new BuildRun { Id = build.Id, Result = build.Result });
+                listOfBuildRuns.Add(
+                    new BuildRun
+                    {
+                        Id = build.Id,
+                        Result = build.Result,
+                        StartDateTime = TimeUtil.GetDateTimeFromTimestamp(build.Timestamp),
+                        Duration = TimeSpan.FromSeconds(build.Duration)
+                    });
             }
             return listOfBuildRuns;
         }

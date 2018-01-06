@@ -1,19 +1,14 @@
 ﻿using DashboardView.CI.CIFactory;
-using DashboardView.CI.CIModels;
+using System;
 using System.Web.Mvc;
 
 namespace DashboardView.Controllers
 {
     public class ReportController : Controller
     { 
-        public ActionResult Index()
+        public ActionResult Index(DateTime? startedFromDate, DateTime? startedToDate)
         {
-            var group = new Group
-            {
-                Builds = new CIFactory().GetCIApi().GetAllBuilds(),
-                Title = "Group"
-            };
-            return View(group);
+            return View(new CIFactory().GetCIApi().GetAllBuilds());
         }
     }
 }

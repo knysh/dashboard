@@ -1,67 +1,68 @@
-﻿@model DashboardView.CI.CIModels.Group
+﻿@using System.Web.Mvc.Html
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "Reports";
 }
-<!DOCTYPE html>
-
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>Bootstrap Part3</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <title>Autotests Data</title>
+    @Scripts.Render("~/bundles/jquery")
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#startedFromDate, #startedToDate").datepicker();
+        });
+    </script>
+    <script>
+        $(function () {
+            $("td[colspan=3]").find("div").hide();
+            $("tr").click(function (event) {
+                var $target = $(event.target);
+                $target.closest("tr").next().find("div").slideToggle();
+            });
+        });
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Multi Column Layouts</h1>
-        <!--First row with column number(1)-->
-        <div class="row">
-            <div class="col-md-1" style="background-color:#8dc1aa">col-md-1</div>
-            <div class="col-md-1" style="background-color:#808080">col-md-1</div>
-            <div class="col-md-1" style="background-color:#8dc1aa">col-md-1</div>
-            <div class="col-md-1" style="background-color:#808080">col-md-1</div>
-            <div class="col-md-1" style="background-color:#8dc1aa">col-md-1</div>
-            <div class="col-md-1" style="background-color:#808080">col-md-1</div>
-            <div class="col-md-1" style="background-color:#8dc1aa">col-md-1</div>
-            <div class="col-md-1" style="background-color:#808080">col-md-1</div>
-            <div class="col-md-1" style="background-color:#8dc1aa">col-md-1</div>
-            <div class="col-md-1" style="background-color:#808080">col-md-1</div>
-            <div class="col-md-1" style="background-color:#8dc1aa">col-md-1</div>
-            <div class="col-md-1" style="background-color:#808080">col-md-1</div>
-        </div>
-        <br />
-        <!--Second row with column number(2)-->
-        <div class="row">
-            <div class="col-md-2" style="background-color:#cfa6e2">col-md-2</div>
-            <div class="col-md-2" style="background-color:#faa76c">col-md-2</div>
-            <div class="col-md-2" style="background-color:#cfa6e2">col-md-2</div>
-            <div class="col-md-2" style="background-color:#faa76c">col-md-2</div>
-            <div class="col-md-2" style="background-color:#cfa6e2">col-md-2</div>
-            <div class="col-md-2" style="background-color:#faa76c">col-md-2</div>
-        </div>
-        <br />
-        <!--Third row with column number(3)-->
-        <div class="row">
-            <div class="col-md-3" style="background-color:#d2ee8b">col-md-3</div>
-            <div class="col-md-3" style="background-color:#8dc1aa">col-md-3</div>
-            <div class="col-md-3" style="background-color:#d2ee8b">col-md-3</div>
-            <div class="col-md-3" style="background-color:#8dc1aa">col-md-3</div>
-        </div>
-        <br />
-        <!--Forth row with column number(4)-->
-        <div class="row">
-            <div class="col-md-4" style="background-color:#faa76c">col-md-4</div>
-            <div class="col-md-4" style="background-color:#cfa6e2">col-md-4</div>
-            <div class="col-md-4" style="background-color:#faa76c">col-md-4</div>
-        </div>
-        <br />
-        <!--Fifth row with column number(6)-->
-        <div class="row">
-            <div class="col-md-6" style="background-color:#808080">col-md-6</div>
-            <div class="col-md-6" style="background-color:#8dc1aa">col-md-6</div>
-        </div>
+    <div class="filter_block">
+        @using (Html.BeginForm("Results", "TestResults", FormMethod.Get))
+        {
+            <text>Started build from:</text> @Html.TextBox("startedFromDate")
+            <text>Started build to:</text> @Html.TextBox("startedToDate")
+            <input type="submit" value="Search" />
+        }
     </div>
-    <script src="js/jquery-2.1.4.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="~/scripts/custom.js"></script>
+    <table>
+        <thead>
+            <tr>
+                <th>one</th>
+                <th>two</th>
+                <th>three</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><p>data<p></td>
+                <td>data</td>
+                <td>data</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div>
+                        <table>
+                            <tr>
+                                <td>data</td>
+                                <td>data</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
-</html> 
+</html>
