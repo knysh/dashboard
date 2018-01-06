@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
 
-namespace DashboardView.Utils
+namespace Utils
 {
     public class HttpUtil
     {
@@ -17,7 +14,8 @@ namespace DashboardView.Utils
             request.Method = "GET";
             request.Accept = "application/json";
             request.Headers.Add("Authorization", "Basic " + encoded);
-            try{
+            try
+            {
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     var reader = new StreamReader(response.GetResponseStream());

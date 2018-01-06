@@ -1,12 +1,6 @@
-﻿using DashboardView.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DashboardView.CI.Jenkins
+﻿namespace DashboardView.CI.Jenkins
 {
-    public class JenkinsBuildModel
+    internal class JenkinsBuildModel
     {
         private double duration;
         public string Result { get; set; }

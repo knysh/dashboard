@@ -1,9 +1,4 @@
-﻿using DashboardView.Models;
-using DashboardView.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using DashboardView.Utils;
 using System.Web.Mvc;
 
 namespace DashboardView.Controllers

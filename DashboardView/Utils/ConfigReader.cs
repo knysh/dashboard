@@ -1,11 +1,5 @@
-﻿using DashboardView.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using DashboardView.CI.CIFactory;
 using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Web;
 
 namespace DashboardView.Utils
 {
@@ -18,17 +12,31 @@ namespace DashboardView.Utils
 
         public static string GetUserName()
         {
-            return GetProperty("userName");
+            return GetProperty("ciUserName");
         }
 
         public static string GetUserPassword()
         {
-            return GetProperty("userPassword");
+            return GetProperty("ciUserPassword");
         }
 
         public static string GetCiUrl()
         {
             return GetProperty("ciUrl");
+        }
+
+        public static CITypes GetCiType()
+        {
+            switch (GetProperty("ciType"))
+            {
+                case "Jenkins": return CITypes.Jenkins;
+                default: return CITypes.Unknown;
+            }
+        }
+
+        public static string GetConfigFileName()
+        {
+            return GetProperty("configFileName");
         }
     }
 }

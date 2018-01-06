@@ -1,6 +1,7 @@
-﻿@using DashboardView.CI.Jenkins;
-@using DashboardView.Utils
-@model DashboardView.Models.Groups
+﻿@using DashboardView.CI.CIModels;
+@using DashboardView.CI.CIFactory;
+@using DashboardView.Utils;
+@model Groups
 @{
     ViewBag.Title = "Home";
 }
@@ -87,31 +88,32 @@
             <tbody>
                 @foreach (var build in @Model.GroupList.ElementAt(index).Builds)
                 {
-                    if (@JenkinsApi.GetBuildInfo(build.Name).Result.Contains("SUCCESS"))
+                    var currentBuild = new CIFactory().GetCIApi().GetBuildInfo(build.Name);
+                    if (currentBuild.Result.Contains("SUCCESS"))
                     {
                         <tr class="success collapse row@{@index}">
-                            <td class="buildname">@build.Name</td>
-                            <td class="buildsuccess">@JenkinsApi.GetBuildInfo(build.Name).Result</td>
-                            <td>@TimeUtil.GetStringFormatFromSeconds(JenkinsApi.GetBuildInfo(build.Name).Duration)</td>
-                            <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link</a></td>
+                            <td class="buildname">@currentBuild.Name</td>
+                            <td class="buildsuccess">@currentBuild.Result</td>
+                            <td>@TimeUtil.GetStringFormatFromSeconds(currentBuild.Duration)</td>
+                            <td><a href="@currentBuild.Url">Link</a></td>
                         </tr>
                     }
-                    else if (@JenkinsApi.GetBuildInfo(build.Name).Result.Contains("FAILURE"))
+                    else if (@currentBuild.Result.Contains("FAILURE"))
                     {
                         <tr class="danger collapse row@{@index}">
-                            <td class="buildname">@build.Name</td>
-                            <td class="buildfailure">@JenkinsApi.GetBuildInfo(build.Name).Result</td>
-                            <td>@TimeUtil.GetStringFormatFromSeconds(JenkinsApi.GetBuildInfo(build.Name).Duration)</td>
-                            <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link</a></td>
+                            <td class="buildname">@currentBuild.Name</td>
+                            <td class="buildfailure">@currentBuild.Result</td>
+                            <td>@TimeUtil.GetStringFormatFromSeconds(currentBuild.Duration)</td>
+                            <td><a href="@currentBuild.Url">Link</a></td>
                         </tr>
                     }
                     else
                     {
                         <tr class="warning collapse row@{@index}">
-                            <td class="buildname">@build.Name</td>
-                            <td class="buildother">@JenkinsApi.GetBuildInfo(build.Name).Result</td>
-                            <td>@TimeUtil.GetStringFormatFromSeconds(JenkinsApi.GetBuildInfo(build.Name).Duration)</td>
-                            <td><a href="@JenkinsApi.GetBuildInfo(build.Name).Url">Link</a></td>
+                            <td class="buildname">@currentBuild.Name</td>
+                            <td class="buildother">@currentBuild.Result</td>
+                            <td>@TimeUtil.GetStringFormatFromSeconds(currentBuild.Duration)</td>
+                            <td><a href="@build.Url">Link</a></td>
                         </tr>
                     }
                  }

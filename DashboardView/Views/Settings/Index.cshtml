@@ -1,4 +1,6 @@
-﻿@model DashboardView.Models.Groups
+﻿@using DashboardView.CI.CIModels;
+@using DashboardView.Utils;
+@model Groups
 @{
     ViewBag.Title = "Settings";
 }
@@ -7,6 +9,8 @@
 @for (var index = 0; index < Model.GroupList.Count; index++)
 {
     <button class="btn btn-block btn-lg buildsgroup" data-toggle="collapse" id="row@{@index}" data-target=".row@{@index}">@Model.GroupList.ElementAt(index).Title</button>
+    using (Html.BeginForm())
+    {
     <div class="table-responsive">
         <table class="table table-hover flat-table ">
             <thead>
@@ -22,13 +26,14 @@
                         @{
                             var currentBuild = @Model.GroupList.ElementAt(index).Builds.ElementAt(buildIndex);
                             <td>@currentBuild.Name</td>
-                            <td>@Html.CheckBoxFor(model => model.GroupList.ElementAt(index).Builds.ElementAt(buildIndex).IsVisible)</td>
                         } 
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+    <button>@Html.ActionLink("Save", "Save", "Settings", new { groups = Model })</button>
+    }}
 }
-<button>@Html.ActionLink("Save", "Save", "Settings", new { groups = Model })</button>
+
 

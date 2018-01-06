@@ -2,9 +2,9 @@
 
 namespace DashboardView.CI.Jenkins
 {
-    internal class JenkinsListOfBuildsModel
+    internal class JenkinsListOfBuildRuns
     {
         public string _Class { get; set; }
-        public List<JenkinsBuildNameModel> Jobs { get; set; }
+        public List<JenkinsBuildRun> Builds { get; set; }
     }
 }
