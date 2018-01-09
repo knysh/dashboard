@@ -7,6 +7,7 @@ namespace DashboardView.CI.Jenkins
         public string Result { get; set; }
         public int Id { get; set; }
         public double Timestamp { get; set; }
-        public double Duration { get; set; }
+        public int Duration { get; set; }
+        public string Url { get; set; }
     }
 }

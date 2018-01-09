@@ -1,4 +1,6 @@
 ﻿@using System.Web.Mvc.Html
+@using DashboardView.Utils
+@model List<DashboardView.CI.CIModels.Build>
 @{
     ViewBag.Title = "Reports";
 }
@@ -6,63 +8,180 @@
 <head>
     <title>Autotests Data</title>
     @Scripts.Render("~/bundles/jquery")
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="~/content/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="~/scripts/jquery.datetimepicker.full.min.js"></script>
     <script>
         $(function () {
-            $("#startedFromDate, #startedToDate").datepicker();
+            $("#toDateTime, #fromDateTime").datetimepicker();
         });
     </script>
-    <script>
-        $(function () {
-            $("td[colspan=3]").find("div").hide();
-            $("tr").click(function (event) {
-                var $target = $(event.target);
-                $target.closest("tr").next().find("div").slideToggle();
-            });
-        });
-    </script>
+    <style>
+        button.buildsgroup {
+            text-align: left;
+            font-weight: bold;
+            font-family: Verdana;
+            font-size: 250%;
+            background-color: #858585;
+            color: #ffffff;
+            box-shadow: none;
+        }
+
+        .flat-table {
+            table-layout: fixed;
+            display: block;
+            font-style: normal;
+            font-family: sans-serif;
+        }
+
+        td {
+            font-family: Verdana;
+            font-size: 100%;
+            align-items: center;
+        }
+
+        footer p {
+            color: aliceblue;
+        }
+
+        .table thead > tr > th {
+            width: 2%;
+            font-size: 200%;
+            background-color: #BBBBBB;
+            color: #ffffff;
+            font-family: Verdana;
+            font-weight: bold;
+            font-size: 150%;
+        }
+
+        .table > tbody > tr.danger > td {
+            align-content: center;
+            font-size: 150%;
+        }
+
+        .table > tbody > tr.success > td {
+            font-size: 150%;
+            border-color: #dff0d8;
+        }
+
+        .table > tbody > tr.warning > td {
+            background-color: #E6E6E6;
+            font-size: 150%;
+            border-color: #E6E6E6;
+        }
+
+        .table > tbody > tr.warning:hover > td {
+            background-color: #BDBDBD;
+            border-color: #BDBDBD;
+        }
+
+        td.buildsuccess {
+            color: #1B882C;
+        }
+
+        td.buildfailure {
+            color: #BD402E;
+        }
+
+        td.buildother {
+            color: #848484;
+        }
+
+        .btn:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .btn:focus {
+            color: #ffffff;
+        }
+    </style>
 </head>
 <body>
-    <div class="filter_block">
-        @using (Html.BeginForm("Results", "TestResults", FormMethod.Get))
-        {
-            <text>Started build from:</text> @Html.TextBox("startedFromDate")
-            <text>Started build to:</text> @Html.TextBox("startedToDate")
-            <input type="submit" value="Search" />
-        }
-    </div>
-    <script src="~/scripts/custom.js"></script>
-    <table>
-        <thead>
-            <tr>
-                <th>one</th>
-                <th>two</th>
-                <th>three</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            <tr>
-                <td><p>data<p></td>
-                <td>data</td>
-                <td>data</td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <div>
-                        <table>
-                            <tr>
-                                <td>data</td>
-                                <td>data</td>
+<div class="filter_block">
+    @using (Html.BeginForm("Index", "Report", FormMethod.Get))
+    {
+        <text>Started build from:</text> @Html.TextBox("fromDateTime")
+        <text>Started build to:</text> @Html.TextBox("toDateTime")
+        <text>Job name pattern:</text> @Html.TextBox("jobNamePattern")
+        <input type="submit" value="Search" />
+    }
+</div>
+    <div>@Html.ActionLink("Update data", "UpdateData", "Report")</div>
+    <div class="table-responsive">
+        <table class="table table-hover flat-table ">
+            <thead>
+                <tr class="row1">
+                    <th>Job name</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Started time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var build in @Model)
+                {
+                    if (build.Result.Contains("SUCCESS"))
+                    {
+                        <tr class="success">
+                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
+                            <td class="buildsuccess">@build.Result</td>
+                            <td>@TimeUtil.GetStringFormatFromSeconds(build.Duration)</td>
+                            <td></td>
+                        </tr>
+                    }
+                    else if (@build.Result.Contains("FAILURE"))
+                    {
+                        <tr class="danger">
+                            <td class="buildname"><a href ="@build.Url" target="_blank">@build.Name</a></td>
+                            <td class="buildfailure">@build.Result</td>
+                            <td>@TimeUtil.GetStringFormatFromSeconds(build.Duration)</td>
+                            <td></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="warning">
+                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
+                            <td class="buildother">@build.Result</td>
+                            <td>@TimeUtil.GetStringFormatFromSeconds(build.Duration)</td>
+                            <td></td>
+                        </tr>
+                    }
+                    foreach (var buildRun in build.BuildRuns)
+                    {
+                        if (buildRun.Result.Contains("SUCCESS"))
+                        {
+                            <tr class="success">
+                                <td class="buildrunid"><a href="@buildRun.Url" target="_blank">@buildRun.Id</a></td>
+                                <td class="buildsuccess">@buildRun.Result</td>
+                                <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
+                                <td>@buildRun.StartDateTime</td>
                             </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                        }
+                        else if (buildRun.Result.Contains("FAILURE"))
+                        {
+                            <tr class="danger">
+                                <td class="buildrunid"><a href="@buildRun.Url" target="_blank">@buildRun.Id</a></td>
+                                <td class="buildfailure">@buildRun.Result</td>
+                                <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
+                                <td>@buildRun.StartDateTime</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="warning">
+                                <td class="buildrunid"><a href="@buildRun.Url" target="_blank">@buildRun.Id</a></td>
+                                <td class="buildother">@buildRun.Result</td>
+                                <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
+                                <td>@buildRun.StartDateTime</td>
+                            </tr>
+                        }
+                    }
+                }
+                    }
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>

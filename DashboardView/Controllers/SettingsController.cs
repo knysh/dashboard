@@ -1,8 +1,8 @@
-﻿using DashboardView.CI.CIFactory;
-using DashboardView.CI.CIModels;
+﻿using DashboardView.CI.CIModels;
 using DashboardView.Utils;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using DashboardView.CI;
 
 namespace DashboardView.Controllers
 {
@@ -10,7 +10,7 @@ namespace DashboardView.Controllers
     { 
         public ActionResult Index()
         {
-            var allBuilds = new CIFactory().GetCIApi().GetAllBuilds();
+            var allBuilds = CIManager.GetCurrentBuilds();
             var existingGroups = DashboardConfigurationManager.GetGroups();
             var newGroups = new Groups { GroupList = new List<Group>() };
 
