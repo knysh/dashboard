@@ -124,7 +124,7 @@
                     if (build.BuildRuns.First().Result.Contains("SUCCESS"))
                     {
                         <tr class="success">
-                            <td class="buildname">@build.Name</td>
+                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -134,7 +134,7 @@
                     else if (build.BuildRuns.First().Result.Contains("FAILURE"))
                     {
                         <tr class="danger">
-                            <td class="buildname">@build.Name</td>
+                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -144,7 +144,7 @@
                     else
                     {
                         <tr class="warning">
-                            <td class="buildname">@build.Name</td>
+                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -160,7 +160,7 @@
                                 <td class="buildsuccess">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
-                                <td>@buildRun.NodeName</td>
+                                <td></td>
                             </tr>
                         }
                         else if (buildRun.Result.Contains("FAILURE"))
@@ -170,7 +170,7 @@
                                 <td class="buildfailure">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
-                                <td>@buildRun.NodeName</td>
+                                <td></td>
                             </tr>
                         }
                         else
@@ -180,7 +180,7 @@
                                 <td class="buildother">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
-                                <td>@buildRun.NodeName</td>
+                                <td></td>
                             </tr>
                         }
                     }

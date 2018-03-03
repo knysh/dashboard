@@ -18,14 +18,44 @@ namespace DashboardView.CI.Jenkins
 
         public override List<Build> GetAllBuilds()
         {
-            var builds = HttpUtil.GetRequest($"{JenkinsUrl}/api/json?tree=jobs[name]", JenkinsUser, JenkinsPassword);
-            var jenkinsModelBuilds = JsonConvert.DeserializeObject<JenkinsListOfBuildsModel>(builds);
-            return jenkinsModelBuilds.Jobs.Select(job => new Build {Name = job.Name}).ToList();
+            var jenkinsBuilds =
+                HttpUtil.GetRequest(
+                    $"{JenkinsUrl}/api/json?tree=jobs[name,url,builds[number,timestamp,id,result,url,duration]]",
+                    JenkinsUser, JenkinsPassword);
+            var jenkinsModelBuilds = JsonConvert.DeserializeObject<JenkinsListOfBuildsModel>(jenkinsBuilds);
+
+            var builds = new List<Build>();
+            foreach (var jenkinsJob in jenkinsModelBuilds.Jobs)
+            {
+                var build = new Build
+                {
+                    Name = jenkinsJob.Name,
+                    Url = jenkinsJob.Url,
+                    BuildRuns = new List<BuildRun>()
+                };
+                foreach (var jenkinsBuild in jenkinsJob.Builds)
+                {
+                    build.BuildRuns.Add(new BuildRun
+                    {
+                        Duration = jenkinsBuild.Duration,
+                        Id = jenkinsBuild.Id,
+                        Url = jenkinsBuild.Url,
+                        Result = jenkinsBuild.Result ?? "In progress",
+                        StartDateTime = TimeUtil.GetDateTimeFromTimestamp(jenkinsBuild.Timestamp)
+                    });
+                }
+                builds.Add(build);
+            }
+
+            return builds;
         }
 
         public override List<BuildRun> GetBuildRuns(string buildName)
         {
-            var response = HttpUtil.GetRequest(url: $"{JenkinsUrl}/job/{buildName}/api/json?tree=builds[number,timestamp,id,result,url,duration]",user: JenkinsUser, password: JenkinsPassword);
+            var response =
+                HttpUtil.GetRequest(
+                    url: $"{JenkinsUrl}/job/{buildName}/api/json?tree=builds[number,timestamp,id,result,url,duration]",
+                    user: JenkinsUser, password: JenkinsPassword);
             var listOfBuilds = JsonConvert.DeserializeObject<JenkinsListOfBuildRuns>(response);
             var builds = listOfBuilds.Builds.Select(build => new BuildRun
             {
@@ -40,12 +70,13 @@ namespace DashboardView.CI.Jenkins
 
         public override string GetBuildRunLog(string buildName, int buildNumber)
         {
-            return HttpUtil.GetRequest($"{JenkinsUrl}/job/{buildName}/{buildNumber}/consoleText", JenkinsUser, JenkinsPassword);
+            return HttpUtil.GetRequest($"{JenkinsUrl}/job/{buildName}/{buildNumber}/consoleText", JenkinsUser,
+                JenkinsPassword);
         }
 
         public override string GetBuildRunNode(string buildName, int buildNumber)
         {
             return Regex.Match(GetBuildRunLog(buildName, buildNumber), NodeNamePattern).Groups[1].ToString();
         }
-    }    
+    }
 }

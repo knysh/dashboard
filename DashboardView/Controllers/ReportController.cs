@@ -29,7 +29,7 @@ namespace DashboardView.Controllers
             var builds = CIFactory.GetCIApi().GetAllBuilds();
             builds = (from build in builds
                 where Regex.IsMatch(build.Name, jobNamePattern)
-                select new Build {Name = build.Name}).ToList();
+                select build).ToList();
 
             var filteredListOfBuilds = new List<Build>();
             foreach (var build in builds)
@@ -37,20 +37,14 @@ namespace DashboardView.Controllers
                 var newBuild = new Build()
                 {
                     Name = build.Name,
+                    Url = build.Url,
                     BuildRuns = new List<BuildRun>()
                 };
-                var runs = CIFactory.GetCIApi().GetBuildRuns(build.Name);
-                foreach (var buildRun in runs)
+                foreach (var buildRun in build.BuildRuns)
                 {
                     if (buildRun.StartDateTime >= fromDateTime && buildRun.StartDateTime <= toDateTime)
                     {
-
-                        //var nodeName = CIFactory.GetCIApi().GetBuildRunNode(build.Name, buildRun.Id);
-                        //if (Regex.IsMatch(nodeName, slavesPattern))
-                        //{
-                        //   buildRun.NodeName = nodeName;
                         newBuild.BuildRuns.Add(buildRun);
-                        //}
                     }
                 }
 
