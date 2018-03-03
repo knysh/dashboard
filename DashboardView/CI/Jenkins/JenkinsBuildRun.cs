@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DashboardView.CI.Jenkins
+﻿namespace DashboardView.CI.Jenkins
 {
     internal class JenkinsBuildRun
     {

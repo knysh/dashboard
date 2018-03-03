@@ -7,8 +7,10 @@ namespace DashboardView.CI.CIFactory
     {
         public abstract List<Build> GetAllBuilds();
 
-        public abstract Build GetBuildInfo(string buildName);
-
         public abstract List<BuildRun> GetBuildRuns(string buildName);
+
+        public abstract string GetBuildRunLog(string buildName, int buildNumber);
+
+        public abstract string GetBuildRunNode(string buildName, int buildNumber);
     }
 }

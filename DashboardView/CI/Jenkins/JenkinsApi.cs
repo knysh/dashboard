@@ -4,59 +4,23 @@ using DashboardView.CI.CIFactory;
 using DashboardView.Utils;
 using DashboardView.CI.CIModels;
 using Utils;
-using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace DashboardView.CI.Jenkins
 {
     internal class JenkinsApi : CIApi
     {
+        private const string NodeNamePattern = @"Running on\s+(.+)\s+in";
         private static readonly string JenkinsUrl = ConfigReader.GetCiUrl();
         private static readonly string JenkinsUser = ConfigReader.GetUserName();
         private static readonly string JenkinsPassword = ConfigReader.GetUserPassword();
 
         public override List<Build> GetAllBuilds()
         {
-            var builds = HttpUtil.GetRequest($"{JenkinsUrl}/api/json?tree=jobs[name, color]", JenkinsUser,
-                JenkinsPassword);
+            var builds = HttpUtil.GetRequest($"{JenkinsUrl}/api/json?tree=jobs[name]", JenkinsUser, JenkinsPassword);
             var jenkinsModelBuilds = JsonConvert.DeserializeObject<JenkinsListOfBuildsModel>(builds);
-            var allJenkinsBuilds = new List<Build>();
-            foreach (var job in jenkinsModelBuilds.Jobs)
-            {
-                var build = GetBuildInfo(job.Name);
-                allJenkinsBuilds.Add(build);
-            }
-            return allJenkinsBuilds;
-        }
-
-        public override Build GetBuildInfo(string buildName)
-        {
-            try
-            {
-                var response = HttpUtil.GetRequest($"{JenkinsUrl}/job/{buildName}/lastBuild/api/json", JenkinsUser,
-                JenkinsPassword);
-                var jenkinsBuildModel = JsonConvert.DeserializeObject<JenkinsBuildModel>(response);
-                var build = new Build
-                {
-                    Name = buildName,
-                    BuildRuns = GetBuildRuns(buildName),
-                    Duration = jenkinsBuildModel.Duration,
-                    Result = jenkinsBuildModel.Result ?? "Unknown",
-                    Url = jenkinsBuildModel.Url
-                };
-                return build;
-            }
-            catch (Exception e)
-            {
-                return new Build()
-                {
-                    Name = buildName,
-                    BuildRuns = new List<BuildRun>(),
-                    Duration = 0,
-                    Result = e.Message,
-                    Url = e.Message
-                };
-            }
+            return jenkinsModelBuilds.Jobs.Select(job => new Build {Name = job.Name}).ToList();
         }
 
         public override List<BuildRun> GetBuildRuns(string buildName)
@@ -73,5 +37,15 @@ namespace DashboardView.CI.Jenkins
             }).ToList();
             return builds;
         }
-    }
+
+        public override string GetBuildRunLog(string buildName, int buildNumber)
+        {
+            return HttpUtil.GetRequest($"{JenkinsUrl}/job/{buildName}/{buildNumber}/consoleText", JenkinsUser, JenkinsPassword);
+        }
+
+        public override string GetBuildRunNode(string buildName, int buildNumber)
+        {
+            return Regex.Match(GetBuildRunLog(buildName, buildNumber), NodeNamePattern).Groups[1].ToString();
+        }
+    }    
 }

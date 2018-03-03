@@ -6,7 +6,7 @@ namespace DashboardView.CI.CIFactory
 {
     public class CIFactory
     {
-        public CIApi GetCIApi()
+        public static CIApi GetCIApi()
         {
             var currentCIType = ConfigReader.GetCiType();
             switch (currentCIType)

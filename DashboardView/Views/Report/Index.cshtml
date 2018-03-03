@@ -103,10 +103,10 @@
         <text>Started build from:</text> @Html.TextBox("fromDateTime")
         <text>Started build to:</text> @Html.TextBox("toDateTime")
         <text>Job name pattern:</text> @Html.TextBox("jobNamePattern")
+        <text>Job name pattern:</text> @Html.TextBox("slavePattern")
         <input type="submit" value="Search" />
     }
 </div>
-    <div>@Html.ActionLink("Update data", "UpdateData", "Report")</div>
     <div class="table-responsive">
         <table class="table table-hover flat-table ">
             <thead>
@@ -115,35 +115,39 @@
                     <th>Status</th>
                     <th>Duration</th>
                     <th>Started time</th>
+                    <th>Slave</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var build in @Model)
                 {
-                    if (build.Result.Contains("SUCCESS"))
+                    if (build.BuildRuns.First().Result.Contains("SUCCESS"))
                     {
                         <tr class="success">
-                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
-                            <td class="buildsuccess">@build.Result</td>
-                            <td>@TimeUtil.GetStringFormatFromSeconds(build.Duration)</td>
+                            <td class="buildname">@build.Name</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
                     }
-                    else if (@build.Result.Contains("FAILURE"))
+                    else if (build.BuildRuns.First().Result.Contains("FAILURE"))
                     {
                         <tr class="danger">
-                            <td class="buildname"><a href ="@build.Url" target="_blank">@build.Name</a></td>
-                            <td class="buildfailure">@build.Result</td>
-                            <td>@TimeUtil.GetStringFormatFromSeconds(build.Duration)</td>
+                            <td class="buildname">@build.Name</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
                     }
                     else
                     {
                         <tr class="warning">
-                            <td class="buildname"><a href="@build.Url" target="_blank">@build.Name</a></td>
-                            <td class="buildother">@build.Result</td>
-                            <td>@TimeUtil.GetStringFormatFromSeconds(build.Duration)</td>
+                            <td class="buildname">@build.Name</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
                     }
@@ -156,6 +160,7 @@
                                 <td class="buildsuccess">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
+                                <td>@buildRun.NodeName</td>
                             </tr>
                         }
                         else if (buildRun.Result.Contains("FAILURE"))
@@ -165,6 +170,7 @@
                                 <td class="buildfailure">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
+                                <td>@buildRun.NodeName</td>
                             </tr>
                         }
                         else
@@ -174,6 +180,7 @@
                                 <td class="buildother">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
+                                <td>@buildRun.NodeName</td>
                             </tr>
                         }
                     }

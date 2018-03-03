@@ -9,5 +9,6 @@ namespace DashboardView.CI.CIModels
         public DateTime StartDateTime { get; set; }
         public int Duration { get; set; }
         public string Url { get; set; }
+        public string NodeName { get; set; } = null;
     }
 }
