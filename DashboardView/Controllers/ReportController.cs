@@ -5,13 +5,14 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using DashboardView.CI.CIFactory;
 using DashboardView.CI.CIModels;
+using DashboardView.Utils;
 
 namespace DashboardView.Controllers
 {
     public class ReportController : Controller
     {
         public ActionResult Index(string jobNamePattern, DateTime? fromDateTime, DateTime? toDateTime,
-            string slavesPattern)
+            string slavePattern)
         {
             if (fromDateTime == null)
             {
@@ -27,33 +28,9 @@ namespace DashboardView.Controllers
             }
 
             var builds = CIFactory.GetCIApi().GetAllBuilds();
-            builds = (from build in builds
-                where Regex.IsMatch(build.Name, jobNamePattern)
-                select build).ToList();
-
-            var filteredListOfBuilds = new List<Build>();
-            foreach (var build in builds)
-            {
-                var newBuild = new Build()
-                {
-                    Name = build.Name,
-                    Url = build.Url,
-                    BuildRuns = new List<BuildRun>()
-                };
-                foreach (var buildRun in build.BuildRuns)
-                {
-                    if (buildRun.StartDateTime >= fromDateTime && buildRun.StartDateTime <= toDateTime)
-                    {
-                        newBuild.BuildRuns.Add(buildRun);
-                    }
-                }
-
-                if (newBuild.BuildRuns.Count > 0)
-                {
-                    filteredListOfBuilds.Add(newBuild);
-                }
-            }
-            return View(filteredListOfBuilds);
+            var buildsByName = FilterUtil.FilterByName(builds, jobNamePattern);
+            var filteredBuilds = FilterUtil.FilterByDateTimeAndNode(buildsByName, fromDateTime, toDateTime, slavePattern);
+            return View(filteredBuilds);
         }
     }
 }

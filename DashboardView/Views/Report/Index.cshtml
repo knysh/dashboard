@@ -103,7 +103,7 @@
         <text>Started build from:</text> @Html.TextBox("fromDateTime")
         <text>Started build to:</text> @Html.TextBox("toDateTime")
         <text>Job name pattern:</text> @Html.TextBox("jobNamePattern")
-        <text>Job name pattern:</text> @Html.TextBox("slavePattern")
+        <text>Slave name pattern:</text> @Html.TextBox("slavePattern")
         <input type="submit" value="Search" />
     }
 </div>
@@ -160,7 +160,7 @@
                                 <td class="buildsuccess">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
-                                <td></td>
+                                <td>@buildRun.NodeName</td>
                             </tr>
                         }
                         else if (buildRun.Result.Contains("FAILURE"))
@@ -170,7 +170,7 @@
                                 <td class="buildfailure">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
-                                <td></td>
+                                <td>@buildRun.NodeName</td>
                             </tr>
                         }
                         else
@@ -180,7 +180,7 @@
                                 <td class="buildother">@buildRun.Result</td>
                                 <td>@TimeUtil.GetStringFormatFromMillis(buildRun.Duration)</td>
                                 <td>@buildRun.StartDateTime</td>
-                                <td></td>
+                                <td>@buildRun.NodeName</td>
                             </tr>
                         }
                     }

@@ -156,10 +156,11 @@
     <Compile Include="CI\CIModels\Build.cs" />
     <Compile Include="CI\CIModels\BuildRun.cs" />
     <Compile Include="CI\CIModels\Group.cs" />
-    <Compile Include="CI\CIModels\Groups.cs" />
     <Compile Include="CI\CIFactory\CITypes.cs" />
+    <Compile Include="CI\CIModels\Groups.cs" />
     <Compile Include="CI\Jenkins\JenkinsApi.cs" />
-    <Compile Include="CI\Jenkins\JenkinsBuildModel.cs" />
+    <Compile Include="CI\Jenkins\JenkinsBuildAction.cs" />
+    <Compile Include="CI\Jenkins\JenkinsBuildParameter.cs" />
     <Compile Include="CI\Jenkins\JenkinsBuildNameModel.cs" />
     <Compile Include="CI\Jenkins\JenkinsBuildRun.cs" />
     <Compile Include="CI\Jenkins\JenkinsListOfBuildRuns.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Utils\FilterUtil.cs" />
     <Compile Include="Utils\TimeUtil.cs" />
     <Compile Include="Utils\ConfigReader.cs" />
     <Compile Include="Utils\DashboardConfigurationManager.cs" />

@@ -6,6 +6,7 @@ using DashboardView.CI.CIModels;
 using Utils;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Ajax.Utilities;
 
 namespace DashboardView.CI.Jenkins
 {
@@ -20,7 +21,7 @@ namespace DashboardView.CI.Jenkins
         {
             var jenkinsBuilds =
                 HttpUtil.GetRequest(
-                    $"{JenkinsUrl}/api/json?tree=jobs[name,url,builds[number,timestamp,id,result,url,duration]]",
+                    $"{JenkinsUrl}/api/json?tree=jobs[name,url,builds[number,timestamp,id,result,url,duration,actions[parameters[name,value]]]]",
                     JenkinsUser, JenkinsPassword);
             var jenkinsModelBuilds = JsonConvert.DeserializeObject<JenkinsListOfBuildsModel>(jenkinsBuilds);
 
@@ -41,9 +42,11 @@ namespace DashboardView.CI.Jenkins
                         Id = jenkinsBuild.Id,
                         Url = jenkinsBuild.Url,
                         Result = jenkinsBuild.Result ?? "In progress",
-                        StartDateTime = TimeUtil.GetDateTimeFromTimestamp(jenkinsBuild.Timestamp)
+                        StartDateTime = TimeUtil.GetDateTimeFromTimestamp(jenkinsBuild.Timestamp),
+                        NodeName= GetParamValueByName(jenkinsBuild.Actions, "currentNodeName")
                     });
                 }
+                
                 builds.Add(build);
             }
 
@@ -77,6 +80,26 @@ namespace DashboardView.CI.Jenkins
         public override string GetBuildRunNode(string buildName, int buildNumber)
         {
             return Regex.Match(GetBuildRunLog(buildName, buildNumber), NodeNamePattern).Groups[1].ToString();
+        }
+
+        private static string GetParamValueByName(IEnumerable<JenkinsBuildAction> actions, string paramName)
+        {
+            foreach (var action in actions)
+            {
+                if (action.Parameters == null)
+                {
+                    continue;
+                }
+                foreach (var parameter in action.Parameters)
+                {
+                    if (parameter.Name.Equals(paramName))
+                    {
+                        return parameter.Value;
+                    }
+                }
+            }
+
+            return "";
         }
     }
 }
