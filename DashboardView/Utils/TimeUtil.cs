@@ -24,8 +24,7 @@ namespace DashboardView.Utils
         public static DateTime GetDateTimeFromTimestamp(double unixTimeStamp)
         {
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
-            return dtDateTime;
+            return dtDateTime.AddMilliseconds(unixTimeStamp).ToUniversalTime();
         }
     }
 }
