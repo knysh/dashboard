@@ -94,17 +94,31 @@
         .btn:focus {
             color: #ffffff;
         }
+        form span {
+            color: #ffffff;
+            font-size: 16px;
+        }
+        form input {
+            border: none;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <div class="filter_block">
     @using (Html.BeginForm("Index", "Report", FormMethod.Get))
     {
-        <text>Started build from:</text> @Html.TextBox("fromDateTime")
-        <text>Started build to:</text> @Html.TextBox("toDateTime")
-        <text>Job name pattern:</text> @Html.TextBox("jobNamePattern")
-        <text>Slave name pattern:</text> @Html.TextBox("slavePattern")
-        <input type="submit" value="Search" />
+        <text><span>Started build from: </span></text> @Html.TextBox("fromDateTime")
+        <text><span>Started build to:</span></text> @Html.TextBox("toDateTime")
+        <text><span>Job name pattern:</span></text> @Html.TextBox("jobNamePattern")
+        <text><span>Slave name pattern:</span></text> @Html.TextBox("slavePattern")
+        <input class="submit" type="submit" value="Search" />
     }
 </div>
     <div class="table-responsive">
