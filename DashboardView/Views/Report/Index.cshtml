@@ -98,15 +98,25 @@
             color: #ffffff;
             font-size: 16px;
         }
-        form input {
+        form button {
             border: none;
             color: black;
-            text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
+        }
+        form button a{
+            color: black;
+        }
+        form button a:focus{
+            color: black;
+            text-decoration: none;
+        }
+        form button a:hover{
+            color: black;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -118,7 +128,9 @@
         <text><span>Started build to:</span></text> @Html.TextBox("toDateTime")
         <text><span>Job name pattern:</span></text> @Html.TextBox("jobNamePattern")
         <text><span>Slave name pattern:</span></text> @Html.TextBox("slavePattern")
-        <input class="submit" type="submit" value="Search" />
+        <button class="submit" type="submit" value="Search">Search</button>
+        <button>@Html.ActionLink("Reset filters", "Index", "Report")</button>
+        
     }
 </div>
     <div class="table-responsive">
